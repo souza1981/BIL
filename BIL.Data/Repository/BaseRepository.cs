@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-[assembly: InternalsVisibleTo("BIL.API")]
+[assembly: InternalsVisibleTo("BIL-API")]
 [assembly: InternalsVisibleTo("BIL.Tests")]
 namespace BIL.Data.Repository
 {
