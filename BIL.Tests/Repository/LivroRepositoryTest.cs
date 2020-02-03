@@ -1,7 +1,7 @@
-﻿using BIL.Data;
-using BIL.Data.Entidades;
+﻿using BIL.Data.Entidades;
 using BIL.Data.Repository;
-using Microsoft.EntityFrameworkCore;
+using BIL.Data.Repository.Interface;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,81 +10,93 @@ using Xunit;
 
 namespace BIL.Tests.Repository
 {
-    public class LivroRepositoryTest
+    public class LivroRepositoryTest : RepositoryTest
     {
         [Fact]
-        public async Task Deve_Criar_Usuario()
+        public async Task Deve_Criar_livro()
         {
-            //arrange
-            var options = new DbContextOptionsBuilder<BILContext>()
-                .UseInMemoryDatabase(databaseName: "Create_Livro")
-                .Options;
+            var novoLivro = CriarNovoLivro(1);
 
-            var novoLivro = new Livro()
-            {
-                Titulo = "Titulo do Livro",
-                Descricao = "Descricao do Livro",
-                Editora = null,
-                QuantidadePaginas = 20
-            };
+            var mockBaseRepository = new Mock<IBaseRepository<Livro>>();
 
-            Livro livroCriado = null;
-            //act
-            
-            using (var context = new BILContext(options))
-            {
-                var livroRepository = new LivroRepository(context);
-                livroCriado = await livroRepository.CreateLivroAsync(novoLivro);
-            }
+            mockBaseRepository.Setup(m => m.CreateAsync(It.IsAny<Livro>()))
+                .ReturnsAsync(novoLivro);
 
-            //assert
+            var livroRepository = new LivroRepository(mockBaseRepository.Object);
+
+            var livroCriado = await livroRepository.CreateLivroAsync(novoLivro);
+
             Assert.NotNull(livroCriado);
+            Assert.Equal(1, livroCriado.Id);
+            mockBaseRepository.Verify(l => l.CreateAsync(It.IsAny<Livro>()), Times.Once);
+        }
 
-            using (var context = new BILContext(options))
+        private static Livro CriarNovoLivro(int id = 0)
+        {
+            if (id == 0)
             {
-                var livroCount = await context.Livros.CountAsync();
-                Assert.Equal(1, livroCount);
+                return new Livro()
+                {
+                    Titulo = "Titulo do Livro",
+                    Descricao = "Descricao do Livro",
+                    Editora = null,
+                    QuantidadePaginas = 20
+                };
+            } else
+            {
+                return new Livro()
+                {
+                    Titulo = "Titulo do Livro",
+                    Descricao = "Descricao do Livro",
+                    Editora = null,
+                    Id = id,
+                    QuantidadePaginas = 20
+                };
             }
         }
 
         [Fact]
-        public async Task Deve_Consultar_Usuario()
+        public async Task Deve_Consultar_Um_Livro()
         {
-            //arrange
+            var livroParaConsultar = CriarNovoLivro(1);
 
-            var options = new DbContextOptionsBuilder<BILContext>()
-                .UseInMemoryDatabase(databaseName: "Create_Livro")
-                .Options;
+            var mockBaseRepository = new Mock<IBaseRepository<Livro>>();
+            mockBaseRepository.Setup(m => m.GetAsync(It.IsAny<int>()))
+                .ReturnsAsync(livroParaConsultar);
 
-            var livroASerBuscado = new Livro()
-            {
-                Titulo = "Titulo do Livro",
-                Descricao = "Descricao do Livro",
-                Editora = null,
-                QuantidadePaginas = 20
-            };
+            var livroRepository = new LivroRepository(mockBaseRepository.Object);
 
-            using (var context = new BILContext(options))
-            {
-                context.Livros.Add(livroASerBuscado);
-                context.SaveChanges();
-            }
+            var livroConsultado = await livroRepository.GetLivroAsync(livroParaConsultar.Id);
 
-            //act
-            Livro livroBuscado = null;
-            using (var context = new BILContext(options))
-            {
-                var livroRepository = new LivroRepository(context);
-                livroBuscado = await livroRepository.GetLivroAsync(livroASerBuscado.Id);
-                Assert.NotNull(livroBuscado);
-            }
+            Assert.NotNull(livroConsultado);
+            Assert.Equal(1, livroConsultado.Id);
 
-            //assert
-            Assert.NotNull(livroBuscado);
-            Assert.Equal(livroBuscado.Id, livroASerBuscado.Id);
+            mockBaseRepository.Verify(l => l.GetAsync(It.IsAny<int>()), Times.Once);
+
         }
+        [Fact]
+        public async Task Deve_Consultar_Dois_Livros()
+        {
+            var livro1 = CriarNovoLivro(1);
+            var livro2 = CriarNovoLivro(2);
+            List<Livro> livros = new List<Livro>();
+            livros.Add(livro1);
+            livros.Add(livro2);
 
-        
+            var mockBaseRepository = new Mock<IBaseRepository<Livro>>();
+
+            mockBaseRepository.Setup(l => l.GetAsync(null,null,""))
+                .ReturnsAsync(livros);
+
+            var livroRepository = new LivroRepository(mockBaseRepository.Object);
+
+            IEnumerable<Livro> livrosConsultados = await livroRepository.GetLivrosAsync();
+
+            Assert.NotNull(livrosConsultados);
+            Assert.Equal(2, livros.Count);
+            mockBaseRepository.Verify(l => l.GetAsync(null, null, ""), Times.Once);
+
+        }
 
     }
 }

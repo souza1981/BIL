@@ -12,5 +12,7 @@ namespace BIL.Data.Repository.Interface
         Task<Livro> GetLivroAsync(int id);
         Task<IEnumerable<Livro>> GetLivrosAsync();
 
+        Task<IEnumerable<Livro>> GetLivrosRecentesAsync();
+
     }
 }

@@ -3,6 +3,7 @@ using BIL.Data.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,28 +11,33 @@ namespace BIL.Data.Repository
 {
     public class LivroRepository : ILivroRepository
     {
-        readonly BILContext _context;
-        public LivroRepository(BILContext context)
+        private IBaseRepository<Livro> _baseRepository;
+        public LivroRepository(IBaseRepository<Livro> baseRepository)
         {
-            _context = context;
+            _baseRepository = baseRepository;            
 
         }
         public async Task<Livro> CreateLivroAsync(Livro livro)
         {
-            await _context.AddAsync(livro);
-            await _context.SaveChangesAsync();
-            return livro;
+            return await _baseRepository.CreateAsync(livro);
 
         }
 
         public async Task<Livro> GetLivroAsync(int id)
         {
-            return await _context.Livros.FirstOrDefaultAsync(l => l.Id == id);
+            return await _baseRepository.GetAsync(id);
         }
 
-        public Task<IEnumerable<Livro>> GetLivrosAsync()
+        public async Task<IEnumerable<Livro>> GetLivrosAsync()
         {
-            throw new NotImplementedException();
+            return await _baseRepository.GetAsync();
+        }
+
+        public Task<IEnumerable<Livro>> GetLivrosRecentesAsync()
+        {
+            Func<IQueryable<Livro>, IOrderedQueryable<Livro>> orderByFunc = x =>
+                 x.OrderByDescending(l => l.Id);
+            return _baseRepository.GetAsync(orderBy: orderByFunc);
         }
     }
 }

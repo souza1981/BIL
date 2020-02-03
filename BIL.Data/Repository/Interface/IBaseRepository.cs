@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BIL.Data.Repository.Interface
 {
-    interface IBaseRepository<T> where T : EntidadeBase
+    public interface IBaseRepository<T> where T : EntidadeBase
     {
         Task<T> CreateAsync(T entity);
         Task<T> GetAsync(int id);
