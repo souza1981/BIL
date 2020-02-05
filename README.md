@@ -8,6 +8,11 @@ Padrões de projeto utilizados:
   <li>Data Mapper</li>
 </ul>
 
+Autenticação da API
+<ul>
+  <li> JWT </li>  
+</ul>
+
 Ferramentas de Teste:
 <ul>
   <li>xUnit</li>
