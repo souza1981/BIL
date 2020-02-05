@@ -12,6 +12,7 @@ namespace BIL.Data.Repository.Interface
     {
         Task<T> CreateAsync(T entity);
         Task<T> GetAsync(int id);
+        Task<T> GetAsync(string id);
         Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,

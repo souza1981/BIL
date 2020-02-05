@@ -35,9 +35,11 @@ namespace BIL_API
 
             //Serviços
             services.AddScoped<ILivroManager, LivroManager>();
+            services.AddScoped<IUsuarioManager, UsuarioManager>();
 
             //Repositórios
             services.AddScoped<ILivroRepository, LivroRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         }
 
