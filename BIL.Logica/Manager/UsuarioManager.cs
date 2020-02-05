@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BIL.Logica.Manager.Interface;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BIL.Logica.Manager
 {
-    class UsuarioManager
+    class UsuarioManager : IUsuarioManager
     {
     }
 }
