@@ -27,9 +27,11 @@ namespace BIL_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //var connection = @"Server=db;Database=bildb;User=sa;Password=P@assWord1054;";
+            var connection = @"Server=192.168.99.100,5434;Database=bildb;User=sa;Password=P@assWord1054;";
+            //var connection = "Server=(localdb)\\mssqllocaldb;Database=BILDb;Trusted_Connection=True;MultipleActiveResultSets=true";
             services.AddDbContext<BILContext>(options =>
-                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BILDb;Trusted_Connection=True;MultipleActiveResultSets=true")); ;
+                options.UseSqlServer(connection)); ;
 
             services.AddControllers();
 

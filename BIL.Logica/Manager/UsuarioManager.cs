@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BIL.Logica.Manager
 {
-    class UsuarioManager : IUsuarioManager
+    public class UsuarioManager : IUsuarioManager
     {
     }
 }
