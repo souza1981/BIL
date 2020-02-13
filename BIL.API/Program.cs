@@ -19,11 +19,13 @@ namespace BIL_API
         public static IHostBuilder CreateHostBuilder(string[] args) {
 
             var port = Environment.GetEnvironmentVariable("PORT");
+            var https_port = Environment.GetEnvironmentVariable("HTTPS_PORT");
             return Host.CreateDefaultBuilder(args)
                     .ConfigureWebHostDefaults(webBuilder =>
                     {
                         webBuilder.UseStartup<Startup>()
-                        .UseUrls("http://*:" + port);
+                        .UseUrls("http://*:" + port)
+                        .UseSetting("https_port",https_port);
                     });
         }
     }
