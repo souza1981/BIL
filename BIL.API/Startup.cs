@@ -36,7 +36,7 @@ namespace BIL_API
             var source = Environment.GetEnvironmentVariable("DB_CONNECTION", EnvironmentVariableTarget.Machine);
             var user = Environment.GetEnvironmentVariable("DB_USER", EnvironmentVariableTarget.Machine);
             var pass = Environment.GetEnvironmentVariable("DB_PASS", EnvironmentVariableTarget.Machine);
-
+             
 
             var connection = "Data Source=" + source + ";User Id=" + user + ";Password=" + pass + ";";
             services.AddDbContext<BILContext>(options =>
