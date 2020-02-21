@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <Compile Include="Migrations\20200215022156_InitialMigration.cs" />
-    <Compile Include="Migrations\20200215022156_InitialMigration.designer.cs" />
     <Compile Include="Migrations\BILContextModelSnapshot.cs" />
   </ItemGroup>
 
