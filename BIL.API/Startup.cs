@@ -1,17 +1,18 @@
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using BIL.Data;
 using BIL.Logica.Manager.Interface;
 using BIL.Logica.Manager;
 using BIL.Data.Repository.Interface;
 using BIL.Data.Repository;
+using Microsoft.EntityFrameworkCore;
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BIL_API
 {
@@ -27,13 +28,20 @@ namespace BIL_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = @"Server=db;Database=bildb;User=sa;Password=P@assWord1054;";
+            //var connection = @"Server=db;Database=bildb;User=sa;Password=P@assWord1054;";
             //var connection = @"Server=localhost,5434;Database=bildb;User=sa;Password=P@assWord1054;";
             //var connection = "Server=(localdb)\\mssqllocaldb;Database=BILDb;Trusted_Connection=True;MultipleActiveResultSets=true";
-            services.AddDbContext<BILContext>(options =>
-                options.UseSqlServer(connection)); ;
 
-            services.AddControllers();
+
+            var source = Environment.GetEnvironmentVariable("DB_CONNECTION", EnvironmentVariableTarget.Machine);
+            var user = Environment.GetEnvironmentVariable("DB_USER", EnvironmentVariableTarget.Machine);
+            var pass = Environment.GetEnvironmentVariable("DB_PASS", EnvironmentVariableTarget.Machine);
+
+            var connection = "Data Source=" + source + ";User Id=" + user + ";Password=" + pass + ";";
+            services.AddDbContext<BILContext>(options =>
+                options.UseOracle(connection, b => b.MigrationsAssembly("BIL-API")));
+            //services.AddControllers();
+
 
             //Serviços
             services.AddScoped<ILivroManager, LivroManager>();
@@ -43,17 +51,21 @@ namespace BIL_API
             services.AddScoped<ILivroRepository, LivroRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            /*
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
+
 
             app.UseRouting();
 
@@ -63,6 +75,23 @@ namespace BIL_API
             {
                 endpoints.MapControllers();
             });
+            */
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseMvc();
+
+
+
         }
     }
 }
