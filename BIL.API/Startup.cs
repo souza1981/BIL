@@ -33,9 +33,9 @@ namespace BIL_API
             //var connection = "Server=(localdb)\\mssqllocaldb;Database=BILDb;Trusted_Connection=True;MultipleActiveResultSets=true";
 
 
-            var source = Environment.GetEnvironmentVariable("DB_CONNECTION", EnvironmentVariableTarget.Machine);
-            var user = Environment.GetEnvironmentVariable("DB_USER", EnvironmentVariableTarget.Machine);
-            var pass = Environment.GetEnvironmentVariable("DB_PASS", EnvironmentVariableTarget.Machine);
+            var source = Environment.GetEnvironmentVariable("DB_CONNECTION", EnvironmentVariableTarget.Process);
+            var user = Environment.GetEnvironmentVariable("DB_USER", EnvironmentVariableTarget.Process);
+            var pass = Environment.GetEnvironmentVariable("DB_PASS", EnvironmentVariableTarget.Process);
              
 
             var connection = "Data Source=" + source + ";User Id=" + user + ";Password=" + pass + ";";
