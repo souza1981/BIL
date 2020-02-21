@@ -43,7 +43,7 @@ namespace BIL_API
                 options.UseOracle(connection, b => b.MigrationsAssembly("BIL-API")));
             //services.AddControllers();
 
-
+             
             //Serviços
             services.AddScoped<ILivroManager, LivroManager>();
             services.AddScoped<IUsuarioManager, UsuarioManager>();
