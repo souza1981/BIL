@@ -9,13 +9,21 @@ namespace BIL.Data
 {
     public class BILContext : DbContext
     {
-        public BILContext([NotNullAttribute] DbContextOptions options) : base(options)
+        public BILContext(DbContextOptions options) : base(options)
         {
+            
+        }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("ADMIN");
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Livro> Livros { get; set; }
         public DbSet<Editora> Editoras { get; set; }
+
+        public DbSet<Usuario> Usuarios { get; set; }
 
 
     }

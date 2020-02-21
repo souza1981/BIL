@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BIL.Data.Entidades
 {
-    class Usuario : EntidadeBase
+    public class Usuario : EntidadeBase
     {
         public string ID { get; set; }
         public string Hash { get; set; }
