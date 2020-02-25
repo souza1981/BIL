@@ -59,13 +59,10 @@ namespace BIL_API
                 server = dbUri.Host;
                 port = dbUri.Port.ToString();
                 connection = "server=" + server + ";Port=" + port + ";User id=" + user + ";password=" + pass;
-
-
             }
 
             services.AddDbContext<BILContext>(options =>
                 options.UseNpgsql(connection, b => b.MigrationsAssembly("BIL-API")));
-            //services.AddControllers();
 
              
             //Serviços
