@@ -11,7 +11,7 @@ COPY ["BIL.API/BIL-API.csproj", "./"]
 COPY ["BIL.Shared/BIL.Shared.csproj", "../BIL.Shared/"]
 COPY ["BIL.Data/BIL.Data.csproj", "../BIL.Data/"]
 COPY ["BIL.Logica/BIL.Logica.csproj", "../BIL.Logica/"]
-COPY ["BIL.Tests/BIL.Test.csproj", "../BIL.Tests/"]
+COPY ["BIL.Tests/BIL.Tests.csproj", "../BIL.Tests/"]
 RUN dotnet restore "BIL-API.csproj"
 COPY . .
 WORKDIR "/src/"
