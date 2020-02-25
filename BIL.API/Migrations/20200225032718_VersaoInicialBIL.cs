@@ -1,17 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace BIL.Data.Migrations
+namespace BIL_API.Migrations
 {
-    public partial class Initial : Migration
+    public partial class VersaoInicialBIL : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "ADMIN");
+
             migrationBuilder.CreateTable(
                 name: "Editoras",
+                schema: "ADMIN",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nome = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true)
                 },
@@ -21,11 +26,25 @@ namespace BIL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Usuarios",
+                schema: "ADMIN",
+                columns: table => new
+                {
+                    ID = table.Column<string>(nullable: false),
+                    Hash = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Livros",
+                schema: "ADMIN",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Titulo = table.Column<string>(nullable: true),
                     Descricao = table.Column<string>(nullable: true),
                     QuantidadePaginas = table.Column<int>(nullable: false),
@@ -37,6 +56,7 @@ namespace BIL.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Livros_Editoras_EditoraId",
                         column: x => x.EditoraId,
+                        principalSchema: "ADMIN",
                         principalTable: "Editoras",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -44,6 +64,7 @@ namespace BIL.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Livros_EditoraId",
+                schema: "ADMIN",
                 table: "Livros",
                 column: "EditoraId");
         }
@@ -51,10 +72,16 @@ namespace BIL.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Livros");
+                name: "Livros",
+                schema: "ADMIN");
 
             migrationBuilder.DropTable(
-                name: "Editoras");
+                name: "Usuarios",
+                schema: "ADMIN");
+
+            migrationBuilder.DropTable(
+                name: "Editoras",
+                schema: "ADMIN");
         }
     }
 }

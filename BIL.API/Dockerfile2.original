@@ -7,13 +7,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["BIL-API.csproj", "./"]
+COPY ["BIL-API.csproj", ""]
 COPY ["../BIL.Shared/BIL.Shared.csproj", "../BIL.Shared/"]
 COPY ["../BIL.Data/BIL.Data.csproj", "../BIL.Data/"]
 COPY ["../BIL.Logica/BIL.Logica.csproj", "../BIL.Logica/"]
-RUN dotnet restore "BIL-API.csproj"
+RUN dotnet restore "./BIL-API.csproj"
 COPY . .
-WORKDIR "/src/"
+WORKDIR "/src/."
 RUN dotnet build "BIL-API.csproj" -c Release -o /app/build
 
 FROM build AS publish

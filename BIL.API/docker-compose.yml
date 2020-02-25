@@ -1,30 +1,38 @@
 version: '3.4'
 
-networks: 
-  bilapi-network:
-    driver: bridge
-
 services:
-  db:
-    container_name: sql-server-db
-    image: "mcr.microsoft.com/mssql/server:2019-CU1-ubuntu-16.04"
-    environment:
-      SA_PASSWORD: "P@assWord1054"
-      ACCEPT_EULA: "Y"
-      MSSQL_AGENT_ENABLED: "true"      
-    ports:
-      - "5434:1433" 
-    networks:
-      - bilapi-network
-    restart: always   
   bil-api:
-    container_name: bil-api-container
+    image: ${DOCKER_REGISTRY-}bilapi
     build:
-      context: ../
-      dockerfile: BIL.API/Dockerfile
-    ports:
-      - "8080:80"
-    networks:
-      - bilapi-network
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
     depends_on:
       - db
+    networks:
+      - bilapi-network
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: abcd1234!
+    volumes:
+      - /home/souza/source/volumes/postgres
+    networks:
+      - bilapi-network
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "souza1981@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+    ports:
+      - "16543:80"
+    depends_on:
+      - db
+    networks:
+      - bilapi-network
+networks:
+  bilapi-network:
+    driver: bridge

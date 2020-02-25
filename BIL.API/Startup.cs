@@ -11,8 +11,7 @@ using BIL.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 namespace BIL_API
 {
@@ -33,14 +32,39 @@ namespace BIL_API
             //var connection = "Server=(localdb)\\mssqllocaldb;Database=BILDb;Trusted_Connection=True;MultipleActiveResultSets=true";
 
 
-            var source = Environment.GetEnvironmentVariable("DB_CONNECTION", EnvironmentVariableTarget.Process);
+            var server = Environment.GetEnvironmentVariable("DB_SERVER", EnvironmentVariableTarget.Process);
+            var port = Environment.GetEnvironmentVariable("DB_PORT", EnvironmentVariableTarget.Process);
             var user = Environment.GetEnvironmentVariable("DB_USER", EnvironmentVariableTarget.Process);
             var pass = Environment.GetEnvironmentVariable("DB_PASS", EnvironmentVariableTarget.Process);
-             
+            var database = Environment.GetEnvironmentVariable("DB_DATABASE", EnvironmentVariableTarget.Process);
 
-            var connection = "Data Source=" + source + ";User Id=" + user + ";Password=" + pass + ";";
+            if (server == null)
+            {
+                server = Environment.GetEnvironmentVariable("DB_SERVER", EnvironmentVariableTarget.Machine);
+                port = Environment.GetEnvironmentVariable("DB_PORT", EnvironmentVariableTarget.Machine);
+                user = Environment.GetEnvironmentVariable("DB_USER", EnvironmentVariableTarget.Machine);
+                pass = Environment.GetEnvironmentVariable("DB_PASS", EnvironmentVariableTarget.Machine);
+                database = Environment.GetEnvironmentVariable("DB_DATABASE", EnvironmentVariableTarget.Machine);
+
+            }
+
+            var connection = "server=" + server + ";Port=" + port + ";User id=" + user + ";password=" + pass + ";database=" + database;
+
+            /*Conexão virá do Heroku*/
+            if (server == null)
+            {
+                Uri dbUri = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL", EnvironmentVariableTarget.Process));
+                user = dbUri.UserInfo.Split(":")[0];
+                pass = dbUri.UserInfo.Split(":")[1];
+                server = dbUri.Host;
+                port = dbUri.Port.ToString();
+                connection = "server=" + server + ";Port=" + port + ";User id=" + user + ";password=" + pass;
+
+
+            }
+
             services.AddDbContext<BILContext>(options =>
-                options.UseOracle(connection, b => b.MigrationsAssembly("BIL-API")));
+                options.UseNpgsql(connection, b => b.MigrationsAssembly("BIL-API")));
             //services.AddControllers();
 
              
@@ -53,20 +77,19 @@ namespace BIL_API
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            /*
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
-
 
             app.UseRouting();
 
@@ -76,23 +99,6 @@ namespace BIL_API
             {
                 endpoints.MapControllers();
             });
-            */
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseMvc();
-
-
-
         }
     }
 }

@@ -4,7 +4,7 @@ using BIL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Oracle.EntityFrameworkCore.Metadata;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BIL_API.Migrations
 {
@@ -15,18 +15,23 @@ namespace BIL_API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn)
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasDefaultSchema("ADMIN")
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("BIL.Data.Entidades.Editora", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -36,15 +41,21 @@ namespace BIL_API.Migrations
             modelBuilder.Entity("BIL.Data.Entidades.Livro", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .HasColumnType("text");
 
-                    b.Property<int?>("EditoraId");
+                    b.Property<int?>("EditoraId")
+                        .HasColumnType("integer");
 
-                    b.Property<int>("QuantidadePaginas");
+                    b.Property<int>("QuantidadePaginas")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Titulo");
+                    b.Property<string>("Titulo")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -56,9 +67,10 @@ namespace BIL_API.Migrations
             modelBuilder.Entity("BIL.Data.Entidades.Usuario", b =>
                 {
                     b.Property<string>("ID")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
-                    b.Property<string>("Hash");
+                    b.Property<string>("Hash")
+                        .HasColumnType("text");
 
                     b.HasKey("ID");
 

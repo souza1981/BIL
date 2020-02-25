@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIL.Data", "..\BIL.Data\BIL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIL.Shared", "..\BIL.Shared\BIL.Shared.csproj", "{6BF46D08-25CA-40E3-B287-1F2443C6429C}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{083FB2FA-53EC-4F29-9120-772BC0467623}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B5D7FC7E-BD1E-45BD-8B39-B7C19DA2CE9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{6BF46D08-25CA-40E3-B287-1F2443C6429C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BF46D08-25CA-40E3-B287-1F2443C6429C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BF46D08-25CA-40E3-B287-1F2443C6429C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{083FB2FA-53EC-4F29-9120-772BC0467623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{083FB2FA-53EC-4F29-9120-772BC0467623}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{083FB2FA-53EC-4F29-9120-772BC0467623}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{083FB2FA-53EC-4F29-9120-772BC0467623}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5D7FC7E-BD1E-45BD-8B39-B7C19DA2CE9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D7FC7E-BD1E-45BD-8B39-B7C19DA2CE9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D7FC7E-BD1E-45BD-8B39-B7C19DA2CE9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D7FC7E-BD1E-45BD-8B39-B7C19DA2CE9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
