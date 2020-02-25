@@ -53,12 +53,16 @@ namespace BIL_API
             /*Conexão virá do Heroku*/
             if (server == null)
             {
+
                 Uri dbUri = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL", EnvironmentVariableTarget.Process));
+                
                 user = dbUri.UserInfo.Split(":")[0];
                 pass = dbUri.UserInfo.Split(":")[1];
                 server = dbUri.Host;
                 port = dbUri.Port.ToString();
-                connection = "server=" + server + ";Port=" + port + ";User id=" + user + ";password=" + pass;
+                database = dbUri.AbsolutePath.Substring(1);
+                connection = "server=" + server + ";Port=" + port + ";User id=" + user + ";password=" + pass + ";database=" + database;
+
             }
 
             services.AddDbContext<BILContext>(options =>
