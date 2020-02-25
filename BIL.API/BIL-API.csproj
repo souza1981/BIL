@@ -34,9 +34,5 @@
     <ProjectReference Include="..\BIL.Logica\BIL.Logica.csproj" />
     <ProjectReference Include="..\BIL.Shared\BIL.Shared.csproj" />
   </ItemGroup>
-
-  <Target Name="PrePublishTarget" AfterTargets="Publish">
-    <Exec Command="dotnet ef database update" />
-  </Target>  
-
+ 
 </Project>
