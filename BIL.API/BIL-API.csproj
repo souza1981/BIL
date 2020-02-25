@@ -33,7 +33,6 @@
     <ProjectReference Include="..\BIL.Data\BIL.Data.csproj" />
     <ProjectReference Include="..\BIL.Logica\BIL.Logica.csproj" />
     <ProjectReference Include="..\BIL.Shared\BIL.Shared.csproj" />
-    <ProjectReference Include="..\BIL.Tests\BIL.Tests.csproj" />
   </ItemGroup>
 
   <Target Name="PrePublishTarget" AfterTargets="Publish">
