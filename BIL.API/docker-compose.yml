@@ -19,7 +19,7 @@ services:
     environment:
       POSTGRES_PASSWORD: abcd1234!
     volumes:
-      - /home/souza/source/volumes/postgres
+      - db-data:/var/lib/postgresql:Z
     networks:
       - bilapi-network
   pgadmin:
@@ -36,3 +36,6 @@ services:
 networks:
   bilapi-network:
     driver: bridge
+volumes:
+  db-data:
+    external: true
