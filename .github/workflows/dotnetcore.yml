@@ -16,4 +16,4 @@ jobs:
     - name: Build with dotnet
       run: dotnet build BIL.API/BIL-API.csproj --configuration Release
     - name: Unit Tests
-      run: dotnet test BIL.TESTS/BIL.Tests.csproj
+      run: dotnet test BIL.Tests/BIL.Tests.csproj
