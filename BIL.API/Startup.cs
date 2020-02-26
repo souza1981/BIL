@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace BIL_API
 {
@@ -50,19 +51,6 @@ namespace BIL_API
 
             var connection = "server=" + server + ";Port=" + port + ";User id=" + user + ";password=" + pass + ";database=" + database;
 
-            if (Environment.GetEnvironmentVariable("DB_URL", EnvironmentVariableTarget.Machine).Length > 0)
-            {
-                Uri dbUri = new Uri(Environment.GetEnvironmentVariable("DB_URL", EnvironmentVariableTarget.Process));
-
-                user = dbUri.UserInfo.Split(":")[0];
-                pass = dbUri.UserInfo.Split(":")[1];
-                server = dbUri.Host;
-                port = dbUri.Port.ToString();
-                database = dbUri.AbsolutePath.Substring(1);
-                connection = "server=" + server + ";Port=" + port + ";User id=" + user + ";password=" + pass + ";database=" + database;
-            }
-
-
             /*Conexão virá do Heroku*/
             if (server == null && Environment.GetEnvironmentVariable("DATABASE_URL", EnvironmentVariableTarget.Process).Length > 0)
             {
@@ -91,6 +79,16 @@ namespace BIL_API
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
+            //Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "BIL API",
+                    Version = "V1"
+                });
+            });
+
             services.AddControllers();
 
         }
@@ -108,6 +106,12 @@ namespace BIL_API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json","BILApi");
+            });
 
             app.UseEndpoints(endpoints =>
             {
