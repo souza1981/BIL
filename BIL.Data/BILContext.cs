@@ -9,7 +9,7 @@ namespace BIL.Data
 {
     public class BILContext : DbContext
     {
-        public BILContext(DbContextOptions options) : base(options)
+        public BILContext(DbContextOptions<BILContext> options) : base(options)
         {
             
         }

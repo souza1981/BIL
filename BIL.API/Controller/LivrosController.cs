@@ -10,11 +10,13 @@ using BIL.Data.Entidades;
 using BIL.Shared;
 using BIL.Logica.Mapper;
 using BIL.Logica.Manager.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BIL_API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class LivrosController : ControllerBase
     {
         private readonly ILivroManager _livroManager;
